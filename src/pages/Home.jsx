@@ -2,11 +2,13 @@ import React, { useState, useLayoutEffect } from 'react';
 import Styles from './home.module.css';
 import { useHistory } from "react-router-dom";
 import { GetDB } from '../config/firebase';
+import Loading from '../components/Loading';
+
 function Home(props) {
   let history = useHistory();
   const [list, setList] = useState([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const resultList = list.filter((account) => account.iduser.indexOf(search) !== -1);
   function handleSearch(e) {
     const { value } = e.target;
@@ -14,20 +16,20 @@ function Home(props) {
   }
 
   async function getList() {
-    const DB = await GetDB(search);
+    const DB = await GetDB();
     setList([...DB])
-    setLoading(false);
+    setIsLoading(false);
   }
-  function reset() {
-    setLoading(true);
+  function handleReset() {
+    setIsLoading(true);
     getList();
   }
   useLayoutEffect(() => {
     getList();
   }, [])
 
-  if (loading) {
-    return <h1> hãy chờ 5 giây .Đang load dữ liệu...</h1>
+  if (isLoading) {
+    return <Loading />
   }
 
   return (
@@ -36,7 +38,7 @@ function Home(props) {
         <div className={Styles.Boxbtn} >
           <button className={Styles.btn} onClick={() => history.push("/add")}>Thêm tài khoản</button>
           <button className={Styles.btn} onClick={() => history.push("/guide")}>Hưỡng dẫn</button>
-          <button className={Styles.btn} onClick={reset}>làm mới</button>
+          <button className={Styles.btn} onClick={handleReset}>làm mới</button>
         </div>
       </div>
       <div className={Styles.boxinput}>
