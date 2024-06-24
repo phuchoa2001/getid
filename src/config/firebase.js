@@ -1,13 +1,18 @@
-import { initializeApp } from 'firebase/app'
+import { initializeApp } from 'firebase/app';
 import {
-  getFirestore, collection, getDocs,
-  addDoc, deleteDoc, updateDoc, doc
-} from 'firebase/firestore'
-import firebaseConfig from './firebaseConfig'
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  updateDoc,
+  doc,
+} from 'firebase/firestore';
+import firebaseConfig from './firebaseConfig';
 
 // Initialize Firebase
-initializeApp(firebaseConfig)
-const db = getFirestore()
+initializeApp(firebaseConfig);
+const db = getFirestore();
 
 // collection ref
 const colRef = collection(db, 'accounts');
@@ -17,7 +22,7 @@ export const GetDB = async () => {
 
   try {
     const snapshot = await getDocs(colRef);
-    snapshot.docs.forEach(doc => {
+    snapshot.docs.forEach((doc) => {
       result.push({ ...doc.data(), id: doc.id });
     });
   } catch (err) {
@@ -31,7 +36,7 @@ export const AddDB = async (account) => {
   const { iduser, link } = account;
   await addDoc(colRef, {
     iduser,
-    link
+    link,
   }).then();
   return true;
-}
+};
