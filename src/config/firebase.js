@@ -19,6 +19,7 @@ const db = getFirestore()
 // collection ref
 const colRefTime = collection(db, 'times');
 const colRef = collection(db, 'accounts');
+
 export const GetDB = async () => {
     const d = new Date();
     let day = d.getDate();
@@ -34,16 +35,17 @@ export const GetDB = async () => {
         .catch(err => {
             console.log(err.message)
         })
+    
     if (day !== time) {
         let docRef = doc(db, 'times', "dmHclfXIJbnJtEXNA0cC")
         updateDoc(docRef, {
             time: day
         }).then();
     }
+
     await getDocs(colRef)
         .then(snapshot => {
             result = []
-            console.log(day === time);
             if (day === time) {
                 snapshot.docs.forEach(doc => {
                     result.push({ ...doc.data(), id: doc.id })
