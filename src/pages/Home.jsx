@@ -3,7 +3,6 @@ import Styles from './home.module.css';
 import { useHistory } from "react-router-dom";
 import { GetDB } from '../config/firebase';
 function Home(props) {
-  console.log("Page Home")
   let history = useHistory();
   const [list, setList] = useState([]);
   const [search, setSearch] = useState("");
@@ -13,10 +12,9 @@ function Home(props) {
     const { value } = e.target;
     setSearch(value);
   }
-  async function getList() {
-    const DB = await GetDB();
 
-    console.log("DB" , DB);
+  async function getList() {
+    const DB = await GetDB(search);
     setList([...DB])
     setLoading(false);
   }
@@ -27,6 +25,7 @@ function Home(props) {
   useLayoutEffect(() => {
     getList();
   }, [])
+
   if (loading) {
     return <h1> hãy chờ 5 giây .Đang load dữ liệu...</h1>
   }
